@@ -7,14 +7,18 @@ import 'package:flutter/rendering.dart';
 
 class MealItem extends StatelessWidget {
   final Meal meal;
+  final Function removeMeal;
 
-  MealItem(this.meal);
+  MealItem(this.meal, this.removeMeal);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>
-          Navigator.pushNamed(context, MealDetailsScreen.id, arguments: meal),
+      onTap: () => Navigator.pushNamed(context, MealDetailsScreen.id, arguments: meal).then((value) {
+        if (value != null) {
+          removeMeal(meal.id);
+        }
+      }),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -26,13 +30,10 @@ class MealItem extends StatelessWidget {
             Stack(
               children: <Widget>[
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                   child: CachedNetworkImage(
                     imageUrl: meal.imageUrl,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                    placeholder: (context, url) => const CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),

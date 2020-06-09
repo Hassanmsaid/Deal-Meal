@@ -20,9 +20,7 @@ class MealDetailsScreen extends StatelessWidget {
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
         decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Color(0xFF556699)),
-            borderRadius: BorderRadius.circular(8)),
+            color: Colors.white, border: Border.all(color: Color(0xFF556699)), borderRadius: BorderRadius.circular(8)),
         child: child);
   }
 
@@ -33,6 +31,12 @@ class MealDetailsScreen extends StatelessWidget {
       backgroundColor: Color(0xFFfff2a6),
       appBar: AppBar(
         title: Text('${meal.title}'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: () {
+          Navigator.of(context).pop(meal.id);
+        },
       ),
       body: ListView(
         children: <Widget>[
@@ -47,9 +51,7 @@ class MealDetailsScreen extends StatelessWidget {
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(8)),
                   child: Text(
                     meal.ingredients[i],
                   ),
