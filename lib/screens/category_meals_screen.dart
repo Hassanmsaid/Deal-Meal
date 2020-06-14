@@ -1,8 +1,10 @@
 import 'package:dealmeal/model/category.dart';
+import 'package:dealmeal/model/filters_data.dart';
 import 'package:dealmeal/model/meal.dart';
 import 'package:dealmeal/utils/dummy_data.dart';
 import 'package:dealmeal/widgets/meal_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CategoryMealsScreen extends StatefulWidget {
   static const id = 'category_meals_screen';
@@ -33,7 +35,12 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
     category = routArgs['category'];
 
     displayedMeals = DUMMY_MEALS.where((meal) {
-      return meal.categories.contains(category.id);
+      if (!meal.isGlutenFree && Provider.of<FiltersData>(context).filters['gluten']) return false;
+      if (!meal.isLactoseFree && Provider.of<FiltersData>(context).filters['lactose']) return false;
+      if (!meal.isVegan && Provider.of<FiltersData>(context).filters['vegan']) return false;
+      if (!meal.isVegetarian && Provider.of<FiltersData>(context).filters['vegetarian']) return false;
+      if (meal.categories.contains(category.id)) return true;
+      return false;
     }).toList();
   }
 
