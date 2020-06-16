@@ -1,9 +1,16 @@
+import 'package:dealmeal/model/favourites_data.dart';
 import 'package:dealmeal/model/meal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class MealDetailsScreen extends StatelessWidget {
+class MealDetailsScreen extends StatefulWidget {
   static const id = 'meal_details';
 
+  @override
+  _MealDetailsScreenState createState() => _MealDetailsScreenState();
+}
+
+class _MealDetailsScreenState extends State<MealDetailsScreen> {
   Widget buildSectionTitle(String title) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -24,64 +31,75 @@ class MealDetailsScreen extends StatelessWidget {
         child: child);
   }
 
+  bool isFavourite(String mealId) {
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Meal meal = ModalRoute.of(context).settings.arguments as Meal;
-    return Scaffold(
-      backgroundColor: Color(0xFFfff2a6),
-      appBar: AppBar(
-        title: Text('${meal.title}'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          Navigator.of(context).pop(meal.id);
-        },
-      ),
-      body: ListView(
-        children: <Widget>[
-          Image.network(meal.imageUrl),
-          buildSectionTitle('Ingrediants'),
-          buildSection(
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: meal.ingredients.length,
-              itemBuilder: (context, i) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(8)),
-                  child: Text(
-                    meal.ingredients[i],
-                  ),
-                );
-              },
-            ),
-          ),
-          buildSectionTitle('Steps'),
-          buildSection(
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: meal.steps.length,
-              itemBuilder: (context, i) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  margin: EdgeInsets.all(5),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text('#${i + 1}'),
+    return ChangeNotifierProvider<FavouritesData>(
+      create: (_) => FavouritesData(),
+      child: Scaffold(
+        backgroundColor: Color(0xFFfff2a6),
+        appBar: AppBar(
+          title: Text('${meal.title}'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Provider.of<FavouritesData>(context).favouriteMeals.indexOf(meal) > -1
+              ? Icons.favorite
+              : Icons.favorite_border),
+          onPressed: () {
+            setState(() {
+              Provider.of<FavouritesData>(context, listen: false).toggleMeal(meal.id);
+            });
+          },
+        ),
+        body: ListView(
+          children: <Widget>[
+            Image.network(meal.imageUrl),
+            buildSectionTitle('Ingrediants'),
+            buildSection(
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: meal.ingredients.length,
+                itemBuilder: (context, i) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      meal.ingredients[i],
                     ),
-                    title: Text(
-                      meal.steps[i],
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+            buildSectionTitle('Steps'),
+            buildSection(
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: meal.steps.length,
+                itemBuilder: (context, i) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    margin: EdgeInsets.all(5),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text('#${i + 1}'),
+                      ),
+                      title: Text(
+                        meal.steps[i],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -31,14 +31,17 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    /// gets selected category from previous screen
     final routArgs = ModalRoute.of(context).settings.arguments as Map<String, Object>;
     category = routArgs['category'];
 
+    Map<String, bool> filters = Provider.of<FiltersData>(context).filters;
     displayedMeals = DUMMY_MEALS.where((meal) {
-      if (!meal.isGlutenFree && Provider.of<FiltersData>(context).filters['gluten']) return false;
-      if (!meal.isLactoseFree && Provider.of<FiltersData>(context).filters['lactose']) return false;
-      if (!meal.isVegan && Provider.of<FiltersData>(context).filters['vegan']) return false;
-      if (!meal.isVegetarian && Provider.of<FiltersData>(context).filters['vegetarian']) return false;
+      if (!meal.isGlutenFree && filters['gluten']) return false;
+      if (!meal.isLactoseFree && filters['lactose']) return false;
+      if (!meal.isVegan && filters['vegan']) return false;
+      if (!meal.isVegetarian && filters['vegetarian']) return false;
       if (meal.categories.contains(category.id)) return true;
       return false;
     }).toList();

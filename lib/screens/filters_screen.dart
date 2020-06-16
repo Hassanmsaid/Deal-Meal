@@ -11,7 +11,7 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  var _gluten, _vegetarian = false, _vegan = false, _lactoseFree = false;
+  bool _gluten, _vegetarian, _vegan, _lactoseFree;
 
   Widget buildSwitchItem(var title, var subtitle, var val, Function update) {
     return SwitchListTile(
@@ -34,10 +34,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _gluten = Provider.of<FiltersData>(context).filters['gluten'];
-    _vegan = Provider.of<FiltersData>(context).filters['vegan'];
-    _vegetarian = Provider.of<FiltersData>(context).filters['vegetarian'];
-    _lactoseFree = Provider.of<FiltersData>(context).filters['lactose'];
+    Map<String, bool> filters = Provider.of<FiltersData>(context).filters;
+    _gluten = filters['gluten'];
+    _vegan = filters['vegan'];
+    _vegetarian = filters['vegetarian'];
+    _lactoseFree = filters['lactose'];
 
     return Consumer<FiltersData>(
       builder: (BuildContext context, FiltersData value, Widget child) {
@@ -48,7 +49,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               IconButton(
                 icon: Icon(Icons.save),
                 onPressed: () {
-                  Provider.of<FiltersData>(context, listen: false).filters['gluten'] = _gluten;
+                  filters['gluten'] = _gluten;
                 },
               )
             ],
@@ -69,22 +70,22 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   children: <Widget>[
                     buildSwitchItem('Gluten-free', 'Only gluten-free meals', _gluten, (newValue) {
                       setState(() {
-                        Provider.of<FiltersData>(context, listen: false).filters['gluten'] = newValue;
+                        filters['gluten'] = newValue;
                       });
                     }),
                     buildSwitchItem('Lactose-free', 'Only lactose-free meals', _lactoseFree, (newValue) {
                       setState(() {
-                        Provider.of<FiltersData>(context, listen: false).filters['lactose'] = newValue;
+                        filters['lactose'] = newValue;
                       });
                     }),
                     buildSwitchItem('Vegetarian', 'Only vegetarian meals', _vegetarian, (newValue) {
                       setState(() {
-                        Provider.of<FiltersData>(context, listen: false).filters['vegetarian'] = newValue;
+                        filters['vegetarian'] = newValue;
                       });
                     }),
                     buildSwitchItem('Vegan', 'Only vegan meals', _vegan, (newValue) {
                       setState(() {
-                        Provider.of<FiltersData>(context, listen: false).filters['vegan'] = newValue;
+                        filters['vegan'] = newValue;
                       });
                     }),
                   ],

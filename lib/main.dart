@@ -1,3 +1,4 @@
+import 'package:dealmeal/model/favourites_data.dart';
 import 'package:dealmeal/model/filters_data.dart';
 import 'package:dealmeal/screens/filters_screen.dart';
 import 'package:dealmeal/screens/meal_details_screen.dart';
@@ -14,10 +15,15 @@ class MyApp extends StatelessWidget {
   // This widgets is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<FiltersData>(
-      create: (BuildContext context) {
-        return FiltersData();
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FiltersData>(
+          create: (_) => FiltersData(),
+        ),
+        ChangeNotifierProvider<FavouritesData>(
+          create: (_) => FavouritesData(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Deal Meal',
         theme: ThemeData(primarySwatch: Colors.blue, accentColor: Colors.amberAccent),
