@@ -8,5 +8,5 @@ Deal Meal is a Flutter application that offers a varity of meals from different 
 - Add a specific meal to favourites.
 - Setup filters to display desired meals.
 
-![home](https://user-images.githubusercontent.com/31613672/84890516-cda7cd80-b09a-11ea-841f-906646a5a45e.png)
-![meals](https://user-images.githubusercontent.com/31613672/84890532-d3051800-b09a-11ea-8b8b-619ff93bc681.png)
+![deal_meal1](https://user-images.githubusercontent.com/31613672/84891068-9685ec00-b09b-11ea-9c9f-ab4ebf95d3c7.png)
+
